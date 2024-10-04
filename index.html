@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidrocarbonetos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        input,
+        button {
+            font-size: 16px;
+            padding: 5px 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Hidrocarbonetos</h1>
+    <label for="carbonInput">Número de Carbonos:</label>
+    <input type="number" id="carbonInput" min="2" max="20">
+    <label for="insaturacoesInput">Insaturações (posições):</label>
+    <input type="text" id="insaturacoesInput" placeholder="Ex: 1,3,5">
+    <label for="escalaInput">Escala:</label>
+    <input type="number" id="escalaInput" value="100">
+    <label for="nomeInput">Nome:</label>
+    <input type="text" id="nomeInput" placeholder="Digite o nome do hidrocarboneto">
+    <button onclick="nome()">Gerar</button>
+    <svg id="hidrocarboneto">
+
+    </svg>
+    <script>
+        const length = parseInt(document.getElementById('escalaInput').value);
+        const svg = document.getElementById('hidrocarboneto');
+
+        const dict = {
+            met: 1,
+            et: 2,
+            prop: 3,
+            but: 4,
+            pent: 5
+        };
+
+
+        class Carbon {
+            constructor(x, y) {
+                this.x = x;
+                this.y = y;
+            }
+            coordinate() {
+                return `${this.x},${this.y}`;
+            }
+        }
+        function nome() {
+             
+            }
+            
+        function gerarHidrocarboneto(number, insaturacoes) {
+            let carbons = [];
+            for (let c = 0; c < number; c++) {
+                let x, y;
+                if (c % 2) {
+                    x = length * c;
+                    y = 0;
+                }
+                else {
+                    x = length * c;
+                    y = length / 2;
+                }
+                carbons.push(new Carbon(x, y));
+            }
+
+            svg.innerHTML = ''; // Clear previous drawing
+
+            for (let i = 0; i < carbons.length - 1; i++) {
+                const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                line.setAttribute("x1", carbons[i].x);
+                line.setAttribute("y1", carbons[i].y);
+                line.setAttribute("x2", carbons[i + 1].x);
+                line.setAttribute("y2", carbons[i + 1].y);
+                line.setAttribute("stroke", "black");
+                line.setAttribute("stroke-width", "2");
+                svg.appendChild(line);
+
+                if (insaturacoes.includes(i + 1)) {
+                    const doubleBond = document.createElementNS("http://www.w3.org/2000/svg", "line");
+                    doubleBond.setAttribute("x1", carbons[i].x);
+                    doubleBond.setAttribute("y1", carbons[i].y + length / 10);
+                    doubleBond.setAttribute("x2", carbons[i + 1].x);
+                    doubleBond.setAttribute("y2", carbons[i + 1].y + length / 10);
+                    doubleBond.setAttribute("stroke", "black");
+                    doubleBond.setAttribute("stroke-width", "2");
+                    svg.appendChild(doubleBond);
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
+
+</html>
